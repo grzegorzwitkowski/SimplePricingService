@@ -9,8 +9,8 @@ public class PricingApi {
 
     private Map<Integer, PriceList> priceListsInCategories = new HashMap<>();
 
-    public void addPriceList(PriceList priceList, int category) {
-        priceListsInCategories.put(category, priceList);
+    public void addPriceList(PriceList priceList) {
+        priceListsInCategories.put(priceList.getCategory(), priceList);
     }
 
     public BigDecimal calculatePrice(Set<PromoOption> selectedPromoOptions, int category) {

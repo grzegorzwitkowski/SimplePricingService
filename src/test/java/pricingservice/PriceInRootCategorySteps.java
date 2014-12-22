@@ -23,7 +23,7 @@ public class PriceInRootCategorySteps {
     @Given("price list for root category exists with: $fees")
     public void priceListForRootCategoryExistsWithFees(ExamplesTable fees) {
         PriceList priceList = toPriceList(fees);
-        pricingApi.addPriceList(priceList, Categories.ROOT);
+        pricingApi.addPriceList(priceList);
     }
 
     @When("creating offer in root category with promo options $fees")
@@ -45,7 +45,7 @@ public class PriceInRootCategorySteps {
             BigDecimal value = new BigDecimal(row.get("value"));
             data.put(promoOption, value);
         }
-        return new PriceList(data);
+        return new PriceList(data, Categories.ROOT);
     }
 
     private Set<PromoOption> toPromoOptions(List<String> fees) {
