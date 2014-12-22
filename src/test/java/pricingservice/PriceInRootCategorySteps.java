@@ -45,7 +45,7 @@ public class PriceInRootCategorySteps {
             BigDecimal value = new BigDecimal(row.get("value"));
             data.put(promoOption, value);
         }
-        return new PriceList(data, Categories.ROOT);
+        return new PriceList(data);
     }
 
     private Set<PromoOption> toPromoOptions(List<String> fees) {

@@ -17,7 +17,7 @@ public class PricingApi {
         BigDecimal totalPrice = BigDecimal.ZERO;
         PriceList priceList = priceListsInCategories.get(category);
         for (PromoOption promoOption : selectedPromoOptions) {
-            BigDecimal priceForPromoOption = priceList.getPromoOptionFees().get(promoOption);
+            BigDecimal priceForPromoOption = priceList.getFeesForPromoOptions().get(promoOption);
             totalPrice = totalPrice.add(priceForPromoOption);
         }
         return totalPrice;
