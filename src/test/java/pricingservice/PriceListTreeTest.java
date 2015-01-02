@@ -3,9 +3,8 @@ package pricingservice;
 import com.google.common.collect.ImmutableSet;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
+import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.annotations.When;
-import org.jbehave.core.steps.InjectableStepsFactory;
-import org.jbehave.core.steps.InstanceStepsFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,12 +14,8 @@ import java.util.Set;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@UsingSteps(instances = {PriceListTreeTest.Steps.class})
 public class PriceListTreeTest extends AcceptanceTest {
-
-    @Override
-    public InjectableStepsFactory stepsFactory() {
-        return new InstanceStepsFactory(configuration(), new Steps());
-    }
 
     public static class Steps {
 
