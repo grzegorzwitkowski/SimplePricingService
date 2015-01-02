@@ -30,11 +30,12 @@ public class PriceListParser {
 
     private void parseLineForCategory(Map<Integer, PriceList> priceListsInCategories, String line) {
         Matcher matcher = CATEGORY_LINE_PATTERN.matcher(line);
-        matcher.find();
-        int category = Integer.valueOf(matcher.group(1));
-        String promoOptionsPart = matcher.group(2);
-        Map<PromoOption, BigDecimal> promoOptionFees = parsePromoOptionFees(promoOptionsPart);
-        priceListsInCategories.put(category, new PriceList(promoOptionFees));
+        if (matcher.find()) {
+            int category = Integer.valueOf(matcher.group(1));
+            String promoOptionsPart = matcher.group(2);
+            Map<PromoOption, BigDecimal> promoOptionFees = parsePromoOptionFees(promoOptionsPart);
+            priceListsInCategories.put(category, new PriceList(promoOptionFees));
+        }
     }
 
     private Map<PromoOption, BigDecimal> parsePromoOptionFees(String promoOptionsPart) {

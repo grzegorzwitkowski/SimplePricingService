@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import static pricingservice.PriceListParserTest.PriceListAssert.assertPriceList;
+import static pricingservice.PriceListParserTest.PriceListAssert.assertThatPriceList;
 import static pricingservice.PromoOption.BOLD;
 import static pricingservice.PromoOption.HIGHLIGHT;
 import static pricingservice.PromoOption.PHOTO;
@@ -30,14 +30,14 @@ public class PriceListParserTest {
 
         categoriesToPriceLists = new PriceListParser().parse(priceListsTree);
 
-        assertPriceList(priceListForCategory(0)).hasFee(BOLD, "0.70").hasFee(HIGHLIGHT, "1.00").hasFee(PHOTO, "0.50");
-        assertPriceList(priceListForCategory(1)).hasFee(BOLD, "0.60").hasFee(PHOTO, "0.40");
-        assertPriceList(priceListForCategory(2)).hasFee(BOLD, "0.50");
-        assertPriceList(priceListForCategory(3)).hasFee(BOLD, "0.40").hasFee(PHOTO, "0.30");
-        assertPriceList(priceListForCategory(4)).hasFee(HIGHLIGHT, "0.90");
+        assertThatPriceList(forCategory(0)).hasFee(BOLD, "0.70").hasFee(HIGHLIGHT, "1.00").hasFee(PHOTO, "0.50");
+        assertThatPriceList(forCategory(1)).hasFee(BOLD, "0.60").hasFee(PHOTO, "0.40");
+        assertThatPriceList(forCategory(2)).hasFee(BOLD, "0.50");
+        assertThatPriceList(forCategory(3)).hasFee(BOLD, "0.40").hasFee(PHOTO, "0.30");
+        assertThatPriceList(forCategory(4)).hasFee(HIGHLIGHT, "0.90");
     }
 
-    private PriceList priceListForCategory(int category) {
+    private PriceList forCategory(int category) {
         return categoriesToPriceLists.get(category);
     }
 
@@ -49,7 +49,7 @@ public class PriceListParserTest {
             this.priceList = priceList;
         }
 
-        public static PriceListAssert assertPriceList(PriceList priceList) {
+        public static PriceListAssert assertThatPriceList(PriceList priceList) {
             return new PriceListAssert(priceList);
         }
 
