@@ -17,6 +17,11 @@ public class PricingApi {
     }
 
     public BigDecimal calculatePrice(Set<PromoOption> selectedPromoOptions, Set<Integer> categoryPath) {
+        Map<PromoOption, BigDecimal> feesForSelectedPromoOptions = calculateFeesForPromoOptions(selectedPromoOptions, categoryPath);
+        return calculateTotalPrice(feesForSelectedPromoOptions);
+    }
+
+    private Map<PromoOption, BigDecimal> calculateFeesForPromoOptions(Set<PromoOption> selectedPromoOptions, Set<Integer> categoryPath) {
         ListIterator<Integer> it = ImmutableList.copyOf(categoryPath).listIterator(categoryPath.size());
         Map<PromoOption, BigDecimal> feesForSelectedPromoOptions = new HashMap<>();
         while (it.hasPrevious()) {
@@ -31,6 +36,10 @@ public class PricingApi {
                 }
             }
         }
+        return feesForSelectedPromoOptions;
+    }
+
+    private BigDecimal calculateTotalPrice(Map<PromoOption, BigDecimal> feesForSelectedPromoOptions) {
         return feesForSelectedPromoOptions.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

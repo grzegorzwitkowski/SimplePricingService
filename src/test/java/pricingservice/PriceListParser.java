@@ -11,35 +11,39 @@ import java.util.regex.Pattern;
 
 public class PriceListParser {
 
-    private static final Pattern LINE_PATTERN = Pattern.compile("(--)(\\d+)\\s*:\\s*(.*)");
+    private static final Pattern CATEGORY_LINE_PATTERN = Pattern.compile("--(\\d+)\\s*:\\s*(.*)");
     private static final Pattern PROMO_OPTIONS_PATTERN = Pattern.compile("(\\w+)\\s*:\\s*(\\d+.?\\d*)");
 
     public Map<Integer, PriceList> parse(String priceListsTree) throws IOException {
-        Map<Integer, Integer> indexesToCategories = new HashMap<>();
-        Map<Integer, PriceList> priceLists = new HashMap<>();
+        Map<Integer, PriceList> priceListsInCategories = new HashMap<>();
         new BufferedReader(new StringReader(priceListsTree)).lines().forEach(line -> {
-            Matcher matcher = LINE_PATTERN.matcher(line);
-            if (matcher.find()) {
-                int parentCategoryIndex = matcher.start(1);
-                int parentCategory = indexesToCategories.containsKey(parentCategoryIndex) ? indexesToCategories.get(parentCategoryIndex) : Categories.NO_CATEGORY;
-                int category = Integer.valueOf(matcher.group(2));
-                int categoryIndex = matcher.start(2);
-                String promoOptionsPart = matcher.group(3);
-                indexesToCategories.put(categoryIndex, category);
-                Map<PromoOption, BigDecimal> feesForPromoOptions = parseFeesForPromoOptions(promoOptionsPart);
-                priceLists.put(category, new PriceList(feesForPromoOptions));
+            if (isLineWithCategory(line)) {
+                parseLineForCategory(priceListsInCategories, line);
             }
         });
-        return priceLists;
+        return priceListsInCategories;
     }
 
-    private Map<PromoOption, BigDecimal> parseFeesForPromoOptions(String promoOptionsPart) {
+    private boolean isLineWithCategory(String line) {
+        return CATEGORY_LINE_PATTERN.matcher(line).find();
+    }
+
+    private void parseLineForCategory(Map<Integer, PriceList> priceListsInCategories, String line) {
+        Matcher matcher = CATEGORY_LINE_PATTERN.matcher(line);
+        matcher.find();
+        int category = Integer.valueOf(matcher.group(1));
+        String promoOptionsPart = matcher.group(2);
+        Map<PromoOption, BigDecimal> promoOptionFees = parsePromoOptionFees(promoOptionsPart);
+        priceListsInCategories.put(category, new PriceList(promoOptionFees));
+    }
+
+    private Map<PromoOption, BigDecimal> parsePromoOptionFees(String promoOptionsPart) {
         Matcher matcher = PROMO_OPTIONS_PATTERN.matcher(promoOptionsPart);
         Map<PromoOption, BigDecimal> feesForPromoOptions = new HashMap<>();
         while (matcher.find()) {
             PromoOption promoOption = PromoOption.valueOf(matcher.group(1));
-            BigDecimal value = new BigDecimal(matcher.group(2));
-            feesForPromoOptions.put(promoOption, value);
+            BigDecimal fee = new BigDecimal(matcher.group(2));
+            feesForPromoOptions.put(promoOption, fee);
         }
         return feesForPromoOptions;
     }
