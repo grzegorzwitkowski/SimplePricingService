@@ -8,6 +8,7 @@ repositories {
 }
 
 dependencies {
+    compile 'com.google.guava:guava:18.0'
     testCompile 'junit:junit:4.11'
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'org.jbehave:jbehave-core:3.9.5'

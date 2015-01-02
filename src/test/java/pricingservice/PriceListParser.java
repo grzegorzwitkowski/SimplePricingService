@@ -27,7 +27,7 @@ public class PriceListParser {
                 String promoOptionsPart = matcher.group(3);
                 indexesToCategories.put(categoryIndex, category);
                 Map<PromoOption, BigDecimal> feesForPromoOptions = parseFeesForPromoOptions(promoOptionsPart);
-                priceLists.put(category, new PriceList(feesForPromoOptions, category, parentCategory));
+                priceLists.put(category, new PriceList(feesForPromoOptions));
             }
         });
         return priceLists;

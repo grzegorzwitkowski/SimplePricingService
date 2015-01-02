@@ -1,5 +1,6 @@
 package pricingservice;
 
+import com.google.common.collect.ImmutableSet;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -18,23 +19,21 @@ public class PriceInRootCategorySteps {
 
     private PricingApi pricingApi = new PricingApi();
     private Set<PromoOption> selectedPromoOptions;
-    private int selectedCategory;
 
     @Given("price list for root category exists with: $fees")
     public void priceListForRootCategoryExistsWithFees(ExamplesTable fees) {
         PriceList priceList = toPriceList(fees);
-        pricingApi.addPriceList(priceList);
+        pricingApi.addPriceList(priceList, Categories.ROOT);
     }
 
     @When("creating offer in root category with promo options $fees")
     public void creatingOfferInRootCategoryWithPromoOptions(List<String> fees) {
         selectedPromoOptions = toPromoOptions(fees);
-        selectedCategory = Categories.ROOT;
     }
 
     @Then("price should equal $expPrice")
     public void priceShouldEqual(BigDecimal expPrice) {
-        BigDecimal price = pricingApi.calculatePrice(selectedPromoOptions, selectedCategory);
+        BigDecimal price = pricingApi.calculatePrice(selectedPromoOptions, ImmutableSet.of(Categories.ROOT));
         assertThat(price).isEqualTo(expPrice);
     }
 
