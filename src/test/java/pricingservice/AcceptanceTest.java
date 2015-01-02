@@ -7,9 +7,9 @@ import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 
-public abstract class JBehaveStory extends JUnitStory {
+public abstract class AcceptanceTest extends JUnitStory {
 
-    public JBehaveStory() {
+    public AcceptanceTest() {
         configuredEmbedder().embedderControls().useStoryTimeoutInSecs(60).doVerboseFailures(true);
     }
 
