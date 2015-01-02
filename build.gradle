@@ -14,8 +14,6 @@ dependencies {
     testCompile 'org.jbehave:jbehave-core:3.9.5'
 }
 
-sourceSets.test.resources.srcDir 'src/test/java'
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
 }
