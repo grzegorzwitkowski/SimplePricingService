@@ -7,11 +7,11 @@ import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,12 +40,8 @@ public class PriceInRootCategorySteps {
     }
 
     private PriceList toPriceList(ExamplesTable fees) {
-        Map<PromoOption, BigDecimal> feesForPromoOptions = new HashMap<>();
-        for (Map<String, String> row : fees.getRows()) {
-            PromoOption promoOption = PromoOption.valueOf(row.get("fee"));
-            BigDecimal value = new BigDecimal(row.get("value"));
-            feesForPromoOptions.put(promoOption, value);
-        }
+        Map<PromoOption, BigDecimal> feesForPromoOptions = fees.getRows().stream()
+                .collect(toMap(row -> PromoOption.valueOf(row.get("promoOption")), row -> new BigDecimal(row.get("fee"))));
         return new PriceList(feesForPromoOptions);
     }
 
