@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
-import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
 
@@ -13,11 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PriceInRootCategory extends AcceptanceTest {
+public class PriceListTreeTest extends AcceptanceTest {
 
     @Override
     public InjectableStepsFactory stepsFactory() {
@@ -26,32 +24,30 @@ public class PriceInRootCategory extends AcceptanceTest {
 
     public static class Steps {
 
-        private static final int ROOT_CATEGORY = 0;
-
         private PricingApi pricingApi = new PricingApi();
         private Set<PromoOption> selectedPromoOptions;
+        private Set<Integer> selectedCategory;
 
-        @Given("price list for root category exists with: $fees")
-        public void priceListForRootCategoryExistsWithFees(ExamplesTable fees) {
-            PriceList priceList = toPriceList(fees);
-            pricingApi.addPriceList(priceList, ROOT_CATEGORY);
+        @Given("price list configuration exists: $priceListTree")
+        public void priceListConfigurationExists(String priceListTree) throws Exception {
+            Map<Integer, PriceList> priceListsInCategories = new PriceListParser().parse(priceListTree);
+            priceListsInCategories.entrySet().stream().forEach(entry -> {
+                int category = entry.getKey();
+                PriceList priceListForCategory = entry.getValue();
+                pricingApi.addPriceList(priceListForCategory, category);
+            });
         }
 
-        @When("creating offer in root category with promo options $fees")
-        public void creatingOfferInRootCategoryWithPromoOptions(List<String> fees) {
-            selectedPromoOptions = toPromoOptions(fees);
+        @When("creating offer in category $categoryPath with promo options $promoOptions")
+        public void creatingOfferInCategoryWithPromoOptions(List<Integer> categoryPath, List<String> promoOptions) {
+            selectedPromoOptions = toPromoOptions(promoOptions);
+            selectedCategory = ImmutableSet.copyOf(categoryPath);
         }
 
         @Then("price should equal $expPrice")
         public void priceShouldEqual(BigDecimal expPrice) {
-            BigDecimal price = pricingApi.calculatePrice(selectedPromoOptions, ImmutableSet.of(ROOT_CATEGORY));
+            BigDecimal price = pricingApi.calculatePrice(selectedPromoOptions, selectedCategory);
             assertThat(price).isEqualTo(expPrice);
-        }
-
-        private PriceList toPriceList(ExamplesTable fees) {
-            Map<PromoOption, BigDecimal> feesForPromoOptions = fees.getRows().stream()
-                    .collect(toMap(row -> PromoOption.valueOf(row.get("promoOption")), row -> new BigDecimal(row.get("fee"))));
-            return new PriceList(feesForPromoOptions);
         }
 
         private Set<PromoOption> toPromoOptions(List<String> fees) {
