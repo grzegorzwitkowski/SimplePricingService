@@ -7,7 +7,7 @@ Given price list configuration exists:
   |
   |--3: PHOTO: 0.40
 When creating offer in category 0,1,2 with promo options BOLD,PHOTO,HIGHLIGHT
-Then price2 should equal 1.70
+Then price should equal 1.70
 
 When creating offer in category 0,3 with promo options BOLD,PHOTO
-Then price2 should equal 1.10
+Then price should equal 1.10
