@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
@@ -20,7 +21,7 @@ public class PriceInRootCategorySteps {
     private static final int ROOT_CATEGORY = 0;
 
     private PricingApi pricingApi = new PricingApi();
-    private Set<PromoOption> selectedPromoOptions;
+    private UUID calculationId;
 
     @Given("price list for root category exists with: $fees")
     public void priceListForRootCategoryExistsWithFees(ExamplesTable fees) {
@@ -28,15 +29,16 @@ public class PriceInRootCategorySteps {
         pricingApi.addPriceList(priceList, ROOT_CATEGORY);
     }
 
-    @When("creating offer in root category with promo options $fees")
-    public void creatingOfferInRootCategoryWithPromoOptions(List<String> fees) {
-        selectedPromoOptions = toPromoOptions(fees);
+    @When("creating offer in root category with promo options $selectedPromoOptions")
+    public void creatingOfferInRootCategoryWithPromoOptions(List<String> selectedPromoOptions) {
+        PriceCalculation priceCalculation = pricingApi.calculatePrice(toPromoOptions(selectedPromoOptions), ImmutableSet.of(ROOT_CATEGORY));
+        this.calculationId = priceCalculation.getCalculationId();
     }
 
     @Then("price should equal $expPrice")
     public void priceShouldEqual(BigDecimal expPrice) {
-        BigDecimal price = pricingApi.calculatePrice(selectedPromoOptions, ImmutableSet.of(ROOT_CATEGORY));
-        assertThat(price).isEqualTo(expPrice);
+        PriceCalculation priceCalculation = pricingApi.getPriceCalculation(calculationId);
+        assertThat(priceCalculation.getPrice()).isEqualTo(expPrice);
     }
 
     private PriceList toPriceList(ExamplesTable fees) {
