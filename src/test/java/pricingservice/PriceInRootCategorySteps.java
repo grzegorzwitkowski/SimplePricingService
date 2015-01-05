@@ -8,10 +8,8 @@ import org.jbehave.core.model.ExamplesTable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
 
 public class PriceInRootCategorySteps {
 
@@ -32,8 +30,9 @@ public class PriceInRootCategorySteps {
     }
 
     @When("creating offer in root category with promo options $selectedPromoOptions")
-    public void creatingOfferInRootCategoryWithPromoOptions(List<String> selectedPromoOptions) {
-        PriceCalculation priceCalculation = pricingApi.calculatePrice(toPromoOptions(selectedPromoOptions), ImmutableSet.of(ROOT_CATEGORY));
+    public void creatingOfferInRootCategoryWithPromoOptions(List<PromoOption> selectedPromoOptions) {
+        PriceCalculation priceCalculation =
+                pricingApi.calculatePrice(ImmutableSet.copyOf(selectedPromoOptions), ImmutableSet.of(ROOT_CATEGORY));
         this.priceCalculationReference.setCalculationId(priceCalculation.getCalculationId());
     }
 
@@ -41,9 +40,5 @@ public class PriceInRootCategorySteps {
         Map<PromoOption, BigDecimal> feesForPromoOptions = fees.getRows().stream()
                 .collect(toMap(row -> PromoOption.valueOf(row.get("promoOption")), row -> new BigDecimal(row.get("fee"))));
         return new PriceList(feesForPromoOptions);
-    }
-
-    private Set<PromoOption> toPromoOptions(List<String> fees) {
-        return fees.stream().map(PromoOption::valueOf).collect(toSet());
     }
 }

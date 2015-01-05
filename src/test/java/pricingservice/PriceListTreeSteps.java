@@ -6,9 +6,6 @@ import org.jbehave.core.annotations.When;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
 
 public class PriceListTreeSteps {
 
@@ -31,12 +28,8 @@ public class PriceListTreeSteps {
     }
 
     @When("creating offer in category $categoryPath with promo options $promoOptions")
-    public void creatingOfferInCategoryWithPromoOptions(List<Integer> categoryPath, List<String> promoOptions) {
-        PriceCalculation priceCalculation = pricingApi.calculatePrice(toPromoOptions(promoOptions), ImmutableSet.copyOf(categoryPath));
+    public void creatingOfferInCategoryWithPromoOptions(List<Integer> categoryPath, List<PromoOption> promoOptions) {
+        PriceCalculation priceCalculation = pricingApi.calculatePrice(ImmutableSet.copyOf(promoOptions), ImmutableSet.copyOf(categoryPath));
         this.priceCalculationReference.setCalculationId(priceCalculation.getCalculationId());
-    }
-
-    private Set<PromoOption> toPromoOptions(List<String> fees) {
-        return fees.stream().map(PromoOption::valueOf).collect(toSet());
     }
 }
