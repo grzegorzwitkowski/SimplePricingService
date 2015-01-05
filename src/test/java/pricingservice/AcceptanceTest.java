@@ -3,6 +3,7 @@ package pricingservice;
 import org.jbehave.core.InjectableEmbedder;
 import org.jbehave.core.annotations.Configure;
 import org.jbehave.core.annotations.UsingEmbedder;
+import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.StoryFinder;
@@ -13,9 +14,6 @@ import org.junit.runner.RunWith;
 
 import java.net.URL;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static org.jbehave.core.reporters.Format.CONSOLE;
 import static org.jbehave.core.reporters.Format.HTML;
@@ -23,6 +21,7 @@ import static org.jbehave.core.reporters.Format.HTML;
 @RunWith(AnnotatedEmbedderRunner.class)
 @Configure(storyReporterBuilder = AcceptanceTest.MyReportBuilder.class)
 @UsingEmbedder(embedder = Embedder.class, verboseFailures = true, storyTimeoutInSecs = 60)
+@UsingSteps(instances = {PriceListTreeSteps.class, PriceInRootCategorySteps.class})
 public class AcceptanceTest extends InjectableEmbedder {
 
     public static class MyReportBuilder extends StoryReporterBuilder {
@@ -34,25 +33,12 @@ public class AcceptanceTest extends InjectableEmbedder {
 
     @Test
     public void run() {
-        List<String> storyPaths = findStoryPathForClass(getClass());
+        List<String> storyPaths = findStoryPathForClass();
 
         injectedEmbedder().runStoriesAsPaths(storyPaths);
     }
 
-    private List<String> findStoryPathForClass(Class<? extends AcceptanceTest> acceptanceTestClass) {
-        String acceptanceTestClassName = acceptanceTestClass.getSimpleName();
-        Pattern pattern = Pattern.compile("([A-Z].*?)([A-Z]|\\z)");
-        Matcher matcher = pattern.matcher(acceptanceTestClassName);
-        int startAt = 0;
-        StringBuilder builder = new StringBuilder();
-        while (matcher.find(startAt)) {
-            builder.append(matcher.group(1).toLowerCase());
-            builder.append("_");
-            startAt = matcher.start(2);
-        }
-        String storyNameString = builder.substring(0, builder.length() - 1) + ".story";
-
-        return new StoryFinder().findPaths(CodeLocations.codeLocationFromPath("src/test/resources/"), "**/*.story", "")
-                .stream().filter(path -> path.endsWith(storyNameString)).collect(Collectors.toList());
+    private List<String> findStoryPathForClass() {
+        return new StoryFinder().findPaths(CodeLocations.codeLocationFromPath("src/test/resources/"), "**/*.story", "");
     }
 }
