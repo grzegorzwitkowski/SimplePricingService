@@ -1,7 +1,12 @@
-package pricingservice;
+package pricingservice.stories;
 
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;
+import pricingservice.AcceptanceTest;
+import pricingservice.PriceCalculationReference;
+import pricingservice.PricingApi;
+import pricingservice.steps.PriceAssertionSteps;
+import pricingservice.steps.PriceInRootCategorySteps;
 
 public class PriceInRootCategoryTest extends AcceptanceTest {
 

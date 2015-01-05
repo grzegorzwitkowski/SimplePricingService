@@ -1,8 +1,14 @@
-package pricingservice;
+package pricingservice.steps;
 
 import com.google.common.collect.ImmutableSet;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.When;
+import pricingservice.PriceCalculation;
+import pricingservice.PriceCalculationReference;
+import pricingservice.PriceList;
+import pricingservice.PriceListParser;
+import pricingservice.PricingApi;
+import pricingservice.PromoOption;
 
 import java.util.List;
 import java.util.Map;

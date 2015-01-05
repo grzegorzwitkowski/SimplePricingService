@@ -1,6 +1,9 @@
-package pricingservice;
+package pricingservice.steps;
 
 import org.jbehave.core.annotations.Then;
+import pricingservice.PriceCalculation;
+import pricingservice.PriceCalculationReference;
+import pricingservice.PricingApi;
 
 import java.math.BigDecimal;
 
