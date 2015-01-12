@@ -16,6 +16,22 @@ dependencies {
 
 sourceSets.test.resources.srcDir 'src/test/java'
 
+test {
+    doFirst {
+        copy {
+            from(zipTree(jbehavePath())) {
+                include "style/*"
+            }
+            into("build/jbehave/view")
+
+        }
+    }
+}
+
+def jbehavePath() {
+    configurations.testCompile.find({ it.name.startsWith("jbehave-core") }).absolutePath
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
 }
