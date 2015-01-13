@@ -8,6 +8,7 @@ import org.jbehave.core.reporters.StoryReporterBuilder;
 
 import static org.jbehave.core.reporters.Format.CONSOLE;
 import static org.jbehave.core.reporters.Format.HTML;
+import static org.jbehave.core.reporters.Format.TXT;
 
 public abstract class AcceptanceTest extends JUnitStory {
 
@@ -22,7 +23,7 @@ public abstract class AcceptanceTest extends JUnitStory {
         return new MostUsefulConfiguration()
                 .useStoryReporterBuilder(new StoryReporterBuilder()
                         .withDefaultFormats()
-                        .withFormats(CONSOLE, HTML)
+                        .withFormats(CONSOLE, HTML, TXT)
                         .withCodeLocation(CodeLocations.codeLocationFromPath("build/jbehave")));
     }
 }
