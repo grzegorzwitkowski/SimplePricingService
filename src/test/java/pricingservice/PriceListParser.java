@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class PriceListParser {
 
-    private static final Pattern CATEGORY_LINE_PATTERN = Pattern.compile("--(\\d+)\\s*:\\s*(.*)");
+    private static final Pattern CATEGORY_LINE_PATTERN = Pattern.compile("#\\s(\\d+)\\s*:\\s*(.*)");
     private static final Pattern PROMO_OPTIONS_PATTERN = Pattern.compile("(\\w+)\\s*:\\s*(\\d+.?\\d*)");
 
     public Map<Integer, PriceList> parse(String priceListsTree) throws IOException {

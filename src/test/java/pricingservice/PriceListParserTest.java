@@ -18,15 +18,15 @@ public class PriceListParserTest {
     @Test
     public void shouldParsePriceListTree() throws Exception {
         String priceListsTree =
-                "--0: BOLD: 0.70, HIGHLIGHT: 1.00, PHOTO: 0.50\n" +
-                "  |\n" +
-                "  |--1: BOLD: 0.60, PHOTO: 0.40\n" +
-                "  |  |\n" +
-                "  |  |--2: BOLD: 0.50\n" +
-                "  |  |\n" +
-                "  |  |--3: BOLD: 0.40, PHOTO: 0.30\n" +
-                "  |\n" +
-                "  |--4: HIGHLIGHT: 0.90";
+                "# 0: BOLD: 0.70, HIGHLIGHT: 1.00, PHOTO: 0.50\n" +
+                "|\n" +
+                "|--# 1: BOLD: 0.60, PHOTO: 0.40\n" +
+                "|  |\n" +
+                "|  |--# 2: BOLD: 0.50\n" +
+                "|  |\n" +
+                "|  |--# 3: BOLD: 0.40, PHOTO: 0.30\n" +
+                "|\n" +
+                "|--# 4: HIGHLIGHT: 0.90";
 
         categoriesToPriceLists = new PriceListParser().parse(priceListsTree);
 
