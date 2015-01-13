@@ -12,7 +12,7 @@ dependencies {
     testCompile 'junit:junit:4.11'
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'org.jbehave:jbehave-core:3.9.5'
-    testCompile group: 'org.jbehave.site', name: 'jbehave-site-resources', version: '3.1.1', ext:'zip'
+    testCompile 'org.jbehave.site:jbehave-site-resources:3.1.1:@zip'
 }
 
 sourceSets.test.resources.srcDir 'src/test/java'
@@ -28,12 +28,11 @@ test {
         }
         copy {
             from(zipTree(jarPath("jbehave-site-resources"))) {
-                include "**/*.js"
+                include "js/**/*"
+                include "style/**/*"
                 include "images/*"
-                include "**/*.css"
             }
             into("build/jbehave/view")
-
         }
     }
 }
