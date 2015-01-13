@@ -11,12 +11,18 @@ import java.util.UUID;
 
 public class PricingApi {
 
-    private static Map<UUID, PriceCalculation> priceCalculations = new HashMap<>();
+    private PriceListRepository priceListRepository;
 
-    private Map<Integer, PriceList> priceListsInCategories = new HashMap<>();
+    public PricingApi(PriceListRepository priceListRepository) {
+        this.priceListRepository = priceListRepository;
+    }
+
+    private Map<UUID, PriceCalculation> priceCalculations = new HashMap<>();
+
+
 
     public void addPriceList(PriceList priceList, int category) {
-        priceListsInCategories.put(category, priceList);
+        priceListRepository.add(priceList, category);
     }
 
     public PriceCalculation calculatePrice(Set<PromoOption> selectedPromoOptions, Set<Integer> categoryPath) {
@@ -32,7 +38,7 @@ public class PricingApi {
         Map<PromoOption, BigDecimal> feesForSelectedPromoOptions = new HashMap<>();
         while (it.hasPrevious()) {
             int category = it.previous();
-            PriceList priceListForCategory = priceListsInCategories.get(category);
+            PriceList priceListForCategory = priceListRepository.get(category);
             if (priceListForCategory != null) {
                 for (PromoOption selectedPromoOption : selectedPromoOptions) {
                     BigDecimal promoOptionFee = priceListForCategory.getFeesForPromoOptions().get(selectedPromoOption);
