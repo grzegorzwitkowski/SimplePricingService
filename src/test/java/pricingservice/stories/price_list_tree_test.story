@@ -1,3 +1,6 @@
+Meta:
+@regression
+
 Narrative:
 In order to increase number of offers
 As a price list administrator

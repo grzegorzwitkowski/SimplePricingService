@@ -1,3 +1,6 @@
+Meta:
+@story 42
+
 Given price list for root category exists with:
 | promoOption |   fee |
 | BOLD        |  0.70 |

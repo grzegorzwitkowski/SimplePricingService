@@ -18,6 +18,7 @@ dependencies {
 sourceSets.test.resources.srcDir 'src/test/java'
 
 test {
+    systemProperty "metaFilters", System.getProperty("metaFilters", "")
     doFirst {
         copy {
             from(zipTree(jarPath("jbehave-core"))) {
