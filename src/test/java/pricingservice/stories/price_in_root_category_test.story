@@ -1,5 +1,5 @@
 Meta:
-@story 42
+@regression
 
 Given price list for root category exists with:
 | promoOption |   fee |

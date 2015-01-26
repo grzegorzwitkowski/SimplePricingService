@@ -1,5 +1,5 @@
 Meta:
-@regression
+@story 42
 
 Narrative:
 In order to increase number of offers
