@@ -3,10 +3,10 @@ package pricingservice;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class PriceCalculation {
+public final class PriceCalculation {
 
-    private UUID calculationId;
-    private BigDecimal price;
+    private final UUID calculationId;
+    private final BigDecimal price;
 
     public PriceCalculation(UUID calculationId, BigDecimal price) {
         this.calculationId = calculationId;

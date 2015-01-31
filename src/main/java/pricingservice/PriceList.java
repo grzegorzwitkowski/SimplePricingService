@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PriceList {
+public final class PriceList {
 
-    private Map<PromoOption, BigDecimal> feesForPromoOptions = new HashMap<>();
+    private final Map<PromoOption, BigDecimal> feesForPromoOptions;
 
     public PriceList(Map<PromoOption, BigDecimal> feesForPromoOptions) {
         this.feesForPromoOptions = ImmutableMap.copyOf(feesForPromoOptions);

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class PriceListRepository {
 
-    private Map<Integer, PriceList> priceListsInCategories = new HashMap<>();
+    private final Map<Integer, PriceList> priceListsInCategories = new HashMap<>();
 
     public void add(PriceList priceList, int category) {
         priceListsInCategories.put(category, priceList);
@@ -15,7 +15,7 @@ public class PriceListRepository {
         return priceListsInCategories.get(category);
     }
 
-    public void clear() {
+    public void removeAll() {
         priceListsInCategories.clear();
     }
 }

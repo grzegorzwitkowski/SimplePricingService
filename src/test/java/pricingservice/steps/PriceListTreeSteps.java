@@ -17,18 +17,16 @@ import java.util.Map;
 public class PriceListTreeSteps {
 
     private PricingApi pricingApi;
-    private PriceListRepository priceListRepository;
     private PriceCalculationReference priceCalculationReference;
 
-    public PriceListTreeSteps(PricingApi pricingApi, PriceListRepository priceListRepository, PriceCalculationReference priceCalculationReference) {
-        this.priceListRepository = priceListRepository;
+    public PriceListTreeSteps(PricingApi pricingApi, PriceCalculationReference priceCalculationReference) {
         this.priceCalculationReference = priceCalculationReference;
         this.pricingApi = pricingApi;
     }
 
     @Given("no price lists are defined")
     public void noPriceListsAreDefined() {
-        priceListRepository.clear();
+        pricingApi.removeAllPriceLists();
     }
 
     @Given("price list configuration exists: $priceListTree")
