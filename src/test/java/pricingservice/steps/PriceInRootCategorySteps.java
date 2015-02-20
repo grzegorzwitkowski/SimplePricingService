@@ -18,32 +18,39 @@ import static java.util.stream.Collectors.toMap;
 
 public class PriceInRootCategorySteps {
 
-    private static final int ROOT_CATEGORY = 0;
+	private static final int ROOT_CATEGORY = 0;
 
-    private PricingApi pricingApi;
-    private PriceCalculationReference priceCalculationReference;
+	private PricingApi pricingApi;
+	private PriceCalculationReference priceCalculationReference;
 
-    public PriceInRootCategorySteps(PricingApi pricingApi, PriceCalculationReference priceCalculationReference) {
-        this.pricingApi = pricingApi;
-        this.priceCalculationReference = priceCalculationReference;
-    }
+	public PriceInRootCategorySteps(PricingApi pricingApi,
+					PriceCalculationReference priceCalculationReference) {
+		this.pricingApi = pricingApi;
+		this.priceCalculationReference = priceCalculationReference;
+	}
 
-    @Given("price list for root category exists with: $fees")
-    public void priceListForRootCategoryExistsWithFees(ExamplesTable fees) {
-        PriceList priceList = toPriceList(fees);
-        pricingApi.addPriceList(priceList, ROOT_CATEGORY);
-    }
+	@Given("price list for root category exists with: $fees")
+	public void priceListForRootCategoryExistsWithFees(ExamplesTable fees) {
+		PriceList priceList = toPriceList(fees);
+		pricingApi.addPriceList(priceList, ROOT_CATEGORY);
+	}
 
-    @When("creating offer in root category with promo options $selectedPromoOptions")
-    public void creatingOfferInRootCategoryWithPromoOptions(List<PromoOption> selectedPromoOptions) {
-        PriceCalculation priceCalculation =
-                pricingApi.calculatePrice(ImmutableSet.copyOf(selectedPromoOptions), ImmutableSet.of(ROOT_CATEGORY));
-        this.priceCalculationReference.setCalculationId(priceCalculation.getCalculationId());
-    }
+	@When("creating offer in root category with promo options $selectedPromoOptions")
+	public void creatingOfferInRootCategoryWithPromoOptions(
+					List<PromoOption> selectedPromoOptions) {
+		PriceCalculation priceCalculation = pricingApi.calculatePrice(
+						ImmutableSet.copyOf(selectedPromoOptions),
+						ImmutableSet.of(ROOT_CATEGORY));
+		this.priceCalculationReference.setCalculationId(priceCalculation
+						.getCalculationId());
+	}
 
-    private PriceList toPriceList(ExamplesTable fees) {
-        Map<PromoOption, BigDecimal> feesForPromoOptions = fees.getRows().stream()
-                .collect(toMap(row -> PromoOption.valueOf(row.get("promoOption")), row -> new BigDecimal(row.get("fee"))));
-        return new PriceList(feesForPromoOptions);
-    }
+	private PriceList toPriceList(ExamplesTable fees) {
+		Map<PromoOption, BigDecimal> feesForPromoOptions = fees
+						.getRows()
+						.stream()
+						.collect(toMap(row -> PromoOption.valueOf(row.get("promoOption")),
+													 row -> new BigDecimal(row.get("fee"))));
+		return new PriceList(feesForPromoOptions);
+	}
 }

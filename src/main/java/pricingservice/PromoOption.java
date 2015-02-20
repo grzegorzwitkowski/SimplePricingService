@@ -1,7 +1,5 @@
 package pricingservice;
 
 public enum PromoOption {
-    BOLD,
-    HIGHLIGHT,
-    PHOTO
+	BOLD, HIGHLIGHT, PHOTO
 }
