@@ -35,7 +35,9 @@ public abstract class AcceptanceTest extends JUnitStory {
 	}
 
 	private List<String> getMetaFilters() {
-		return Arrays.stream(System.getProperty("metaFilters", "").split(","))
-						.map(String::trim).collect(toList());
+		String metaFiltersProperty = System.getProperty("metaFilters", "");
+		return Arrays.stream(metaFiltersProperty.split(","))
+						.map(String::trim)
+						.collect(toList());
 	}
 }

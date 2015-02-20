@@ -1,6 +1,8 @@
 Meta:
 @regression
 
+Scenario: Price in default category
+
 Given price list for root category exists with:
 | promoOption |   fee |
 | BOLD        |  0.70 |
