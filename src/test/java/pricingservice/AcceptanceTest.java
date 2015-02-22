@@ -17,27 +17,27 @@ import static org.jbehave.core.reporters.Format.TXT;
 
 public abstract class AcceptanceTest extends JUnitStory {
 
-	public AcceptanceTest() {
-		Embedder embedder = configuredEmbedder();
-		embedder.useMetaFilters(getMetaFilters());
-		embedder.embedderControls().doVerboseFailures(true)
-						.useStoryTimeoutInSecs(60);
-	}
+  public AcceptanceTest() {
+    Embedder embedder = configuredEmbedder();
+    embedder.useMetaFilters(getMetaFilters());
+    embedder.embedderControls().doVerboseFailures(true)
+            .useStoryTimeoutInSecs(60);
+  }
 
-	@Override
-	public Configuration configuration() {
-		return new MostUsefulConfiguration()
-						.useStoryReporterBuilder(new StoryReporterBuilder()
-										.withDefaultFormats()
-										.withFormats(CONSOLE, HTML, TXT)
-										.withCodeLocation(
-														CodeLocations.codeLocationFromPath("build/jbehave")));
-	}
+  @Override
+  public Configuration configuration() {
+    return new MostUsefulConfiguration()
+            .useStoryReporterBuilder(new StoryReporterBuilder()
+                    .withDefaultFormats()
+                    .withFormats(CONSOLE, HTML, TXT)
+                    .withCodeLocation(
+                            CodeLocations.codeLocationFromPath("build/jbehave")));
+  }
 
-	private List<String> getMetaFilters() {
-		String metaFiltersProperty = System.getProperty("metaFilters", "");
-		return Arrays.stream(metaFiltersProperty.split(","))
-						.map(String::trim)
-						.collect(toList());
-	}
+  private List<String> getMetaFilters() {
+    String metaFiltersProperty = System.getProperty("metaFilters", "");
+    return Arrays.stream(metaFiltersProperty.split(","))
+            .map(String::trim)
+            .collect(toList());
+  }
 }

@@ -4,44 +4,44 @@ sourceCompatibility = 1.8
 version = '1.0'
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    compile 'com.google.guava:guava:18.0'
-    testCompile 'junit:junit:4.11'
-    testCompile 'org.assertj:assertj-core:1.7.0'
-    testCompile 'org.jbehave:jbehave-core:3.9.5'
-    testCompile 'org.jbehave.site:jbehave-site-resources:3.1.1:@zip'
+  compile 'com.google.guava:guava:18.0'
+  testCompile 'junit:junit:4.11'
+  testCompile 'org.assertj:assertj-core:1.7.0'
+  testCompile 'org.jbehave:jbehave-core:3.9.5'
+  testCompile 'org.jbehave.site:jbehave-site-resources:3.1.1:@zip'
 }
 
 sourceSets.test.resources.srcDir 'src/test/java'
 
 test {
-    systemProperty "metaFilters", System.getProperty("metaFilters", "")
-    doFirst {
-        copy {
-            from(zipTree(jarPath("jbehave-core"))) {
-                include "style/*"
-            }
-            into("build/jbehave/view")
+  systemProperty "metaFilters", System.getProperty("metaFilters", "")
+  doFirst {
+    copy {
+      from(zipTree(jarPath("jbehave-core"))) {
+        include "style/*"
+      }
+      into("build/jbehave/view")
 
-        }
-        copy {
-            from(zipTree(jarPath("jbehave-site-resources"))) {
-                include "js/**/*"
-                include "style/**/*"
-                include "images/*"
-            }
-            into("build/jbehave/view")
-        }
     }
+    copy {
+      from(zipTree(jarPath("jbehave-site-resources"))) {
+        include "js/**/*"
+        include "style/**/*"
+        include "images/*"
+      }
+      into("build/jbehave/view")
+    }
+  }
 }
 
 def jarPath(String jarName) {
-    configurations.testCompile.find({ it.name.startsWith(jarName) }).absolutePath
+  configurations.testCompile.find({ it.name.startsWith(jarName) }).absolutePath
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.2.1'
+  gradleVersion = '2.2.1'
 }

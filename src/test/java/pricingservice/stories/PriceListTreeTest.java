@@ -10,13 +10,13 @@ import pricingservice.steps.PriceListTreeSteps;
 
 public class PriceListTreeTest extends AcceptanceTest {
 
-	@Override
-	public InjectableStepsFactory stepsFactory() {
-		PricingApiClient pricingApiClient = new PricingApiClient();
-		PriceCalculationReference priceCalculationReference = new PriceCalculationReference();
-		return new InstanceStepsFactory(configuration(), new PriceListTreeSteps(
-						pricingApiClient.getPricingApi(), priceCalculationReference),
-						new PriceAssertionSteps(pricingApiClient.getPricingApi(),
-										priceCalculationReference));
-	}
+  @Override
+  public InjectableStepsFactory stepsFactory() {
+    PricingApiClient pricingApiClient = new PricingApiClient();
+    PriceCalculationReference priceCalculationReference = new PriceCalculationReference();
+    return new InstanceStepsFactory(configuration(), new PriceListTreeSteps(
+            pricingApiClient.getPricingApi(), priceCalculationReference),
+            new PriceAssertionSteps(pricingApiClient.getPricingApi(),
+                    priceCalculationReference));
+  }
 }
