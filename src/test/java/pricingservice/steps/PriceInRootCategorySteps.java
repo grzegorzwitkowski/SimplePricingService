@@ -21,12 +21,12 @@ public class PriceInRootCategorySteps {
   private static final int ROOT_CATEGORY = 0;
 
   private PricingApi pricingApi;
-  private PriceCalculationReference priceCalculationReference;
+  private PriceCalculationReference priceCalculationRef;
 
   public PriceInRootCategorySteps(PricingApi pricingApi,
-                                  PriceCalculationReference priceCalculationReference) {
+                                  PriceCalculationReference priceCalculationRef) {
     this.pricingApi = pricingApi;
-    this.priceCalculationReference = priceCalculationReference;
+    this.priceCalculationRef = priceCalculationRef;
   }
 
   @Given("price list for root category exists with: $fees")
@@ -41,16 +41,16 @@ public class PriceInRootCategorySteps {
     PriceCalculation priceCalculation = pricingApi.calculatePrice(
             ImmutableSet.copyOf(selectedPromoOptions),
             ImmutableSet.of(ROOT_CATEGORY));
-    this.priceCalculationReference.setCalculationId(priceCalculation
-            .getCalculationId());
+    this.priceCalculationRef
+            .setCalculationId(priceCalculation.getCalculationId());
   }
 
   private PriceList toPriceList(ExamplesTable fees) {
-    Map<PromoOption, BigDecimal> feesForPromoOptions = fees
-            .getRows()
-            .stream()
-            .collect(toMap(row -> PromoOption.valueOf(row.get("promoOption")),
-                    row -> new BigDecimal(row.get("fee"))));
+    Map<PromoOption, BigDecimal> feesForPromoOptions = fees.getRows().stream()
+            .collect(toMap(
+                    row -> PromoOption.valueOf(row.get("promoOption")),
+                    row -> new BigDecimal(row.get("fee"))
+            ));
     return new PriceList(feesForPromoOptions);
   }
 }

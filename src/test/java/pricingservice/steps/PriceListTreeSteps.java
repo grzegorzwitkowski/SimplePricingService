@@ -19,11 +19,13 @@ public class PriceListTreeSteps {
 
   private PricingApi pricingApi;
   private PriceCalculationReference priceCalculationReference;
+  private PriceListParser priceListParser;
 
   public PriceListTreeSteps(PricingApi pricingApi,
                             PriceCalculationReference priceCalculationReference) {
     this.priceCalculationReference = priceCalculationReference;
     this.pricingApi = pricingApi;
+    priceListParser = new PriceListParser();
   }
 
   @Given("no price lists are defined")
@@ -32,15 +34,15 @@ public class PriceListTreeSteps {
   }
 
   @Given("price list configuration exists: $priceListTree")
-  public void priceListConfigurationExists(String priceListTree)
-          throws Exception {
-    Map<Integer, PriceList> priceListsInCategories = new PriceListParser()
-            .parse(priceListTree);
-    priceListsInCategories.entrySet().stream().forEach(entry -> {
-      int category = entry.getKey();
-      PriceList priceListForCategory = entry.getValue();
-      pricingApi.addPriceList(priceListForCategory, category);
-    });
+  public void priceListConfigurationExists(String priceListTree) throws Exception {
+    Map<Integer, PriceList> priceListsInCategories =
+            priceListParser.parse(priceListTree);
+    priceListsInCategories.entrySet().stream()
+            .forEach(priceListInCategory -> {
+              int category = priceListInCategory.getKey();
+              PriceList priceList = priceListInCategory.getValue();
+              pricingApi.addPriceList(priceList, category);
+            });
   }
 
   @When("creating offer in category $categoryPath with promo options $promoOptions")
